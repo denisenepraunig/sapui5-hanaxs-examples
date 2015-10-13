@@ -6,7 +6,13 @@ This is a Todo app with CRUD support for XSODATA with the SAPUI5 OData Model ver
 ### App package name
 The app is called **todoapp**. Please make sure to create the same package name or replace it with your package name.
 
-## App creation
+### App screenshot
+![Todo App Screenshot](screenshot_todo.png)
+
+### Folder structure
+![Todo App Folder Structure](folder_structure_todo.png)
+
+### App creation
 
 When you copy and paste the files please do it in the follwing order - and also do the replacements (HANA_INSTANCE, ...)
 
