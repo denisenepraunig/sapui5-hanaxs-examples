@@ -3,6 +3,8 @@
 ## App info
 This is a Todo app with CRUD support for XSODATA with the SAPUI5 OData Model version 2.
 
+The app needs to be hosted inside an HANA instance as an XS-app.
+
 ### App package name
 The app is called **todoapp**. Please make sure to create the same package name or replace it with your package name.
 
@@ -10,6 +12,8 @@ The app is called **todoapp**. Please make sure to create the same package name 
 ![Todo App Screenshot](screenshot_todo.png)
 
 ### Folder structure
+App hosted inside an HANA instance:
+
 ![Todo App Folder Structure](folder_structure_todo.png)
 
 ### App creation
