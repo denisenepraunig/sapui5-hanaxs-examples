@@ -20,36 +20,36 @@ sap.ui.define([
 		 */
 		init: function() {
 
-            this._initOData();
-			
+			this._initOData();
+
 			this.oModel = new JSONModel({
 				newTodo: ''
 			});
-			
+
 			this.setModel(this.oModel, "data");
-			
+
 			// call the base component's init function
 			UIComponent.prototype.init.apply(this, arguments);
 
 			// set the device model
 			this.setModel(models.createDeviceModel(), "device");
 		},
-		
+
 		_initOData: function() {
-			
+
 			var sServiceUrl = "./odata/todo.xsodata";
 
-            this.oDataModel = new ODataModel(sServiceUrl);
-            
-            // useBatch false is important for SP08 XS!
-            this.oDataModel.setUseBatch(false);
-            
-            this.oDataModel.setDefaultBindingMode("TwoWay");
-            
-            this.setModel(this.oDataModel);
-            
-            // the OData model was not automatically created with the app descriptor
-            // because the useBatch was ignored...
+			this.oDataModel = new ODataModel(sServiceUrl);
+
+			// useBatch false is important for SP08 XS!
+			this.oDataModel.setUseBatch(false);
+
+			this.oDataModel.setDefaultBindingMode("TwoWay");
+
+			this.setModel(this.oDataModel);
+
+			// the OData model was not automatically created with the app descriptor
+			// because the useBatch was ignored...
 		},
 
 		/**
