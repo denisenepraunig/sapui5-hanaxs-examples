@@ -15,7 +15,7 @@ When you copy and paste the files please do it in the follwing order - and also 
 * create the data folder, create todo.hdbtable and after that todo_user.hdbrole
 * create the odata folder and the todo.xsodata
 
-At the end execute the queries:
+At the end execute the queries (see also **queries.sql** file):
 
 ```sql
 call "HCP"."HCP_GRANT_SELECT_ON_ACTIVATED_OBJECTS";
@@ -32,7 +32,7 @@ Replace **HANA_INSTANCE** with your HANA instance name.
 ### NEO-Schema
 Replace **YOUR_NEO_SCHEMA** with your NEO-Schema.
 
-Get your SCHEMA with: SELECT * FROM "HCP"."HCP_DEV_METADATA"
+Get your SCHEMA with: `SELECT * FROM "HCP"."HCP_DEV_METADATA"`
 
 ### Trial User
 Replace **YOUR_USER_TRIAL** with your trial user - for example: p123456trial
