@@ -1,0 +1,9 @@
+table.schemaName = "YOUR_NEO_SCHEMA";
+table.tableType = COLUMNSTORE;  
+table.description = "Todo App";  
+table.columns = [  
+        {name = "id"; sqlType = NVARCHAR; nullable = false; length=11;},
+        {name = "title"; sqlType = NVARCHAR; nullable = false; length=75;},
+        {name = "completed"; sqlType = NVARCHAR; length=1;}
+];  
+table.primaryKey.pkcolumns = ["id"];

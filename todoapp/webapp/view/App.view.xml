@@ -1,0 +1,47 @@
+<core:View controllerName="todoapp.controller.App" 
+    xmlns:core="sap.ui.core" 
+    xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns="sap.m">
+		<App>
+			<Page title="{i18n>title}" backgroundDesign="Solid">
+				<content>
+					<Panel
+						headerText="{i18n>panelTitel}"
+						class="sapUiResponsiveMargin"
+						width="auto">
+						
+						<Input value="{data>/newTodo}" placeholder="{i18n>inputPlaceholder}" change="onAddTodo" />
+						
+						<List id="todo-list" items="{/todo}" selectionChange="onToggleCompleted"
+							mode="MultiSelect"
+							growing="true"
+							growingScrollToLoad="true"
+							showNoData="false"
+							showSeparators="None"
+							rememberSelections="false">
+							
+							<!-- there is no boolean datatype in HANA, 
+							    therefore values are mapped to boolean values -->
+							    
+							<CustomListItem selected="{= ${completed} === 'X' ? true : false }">
+								<Input class="todoListInput" value="{title}" change="onChangeTodo"/>
+							</CustomListItem>
+							
+						</List>
+					</Panel>
+				</content>
+				<footer>
+					<Bar>
+						<contentMiddle>
+							<Button
+								type="Reject"
+								icon="sap-icon://delete" 
+								text="{i18n>clearCompleted}" 
+								press="onClearCompleted" />
+						</contentMiddle>
+					</Bar>
+				</footer>
+			</Page>
+		</App>
+</core:View>

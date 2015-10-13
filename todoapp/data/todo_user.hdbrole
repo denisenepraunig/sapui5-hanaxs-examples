@@ -1,0 +1,5 @@
+role YOUR_USER_TRIAL.HANA_INSTANCE.todoapp.data::todo_user {
+    application privilege: YOUR_USER_TRIAL.HANA_INSTANCE.todoapp::data_access;
+    catalog schema "YOUR_NEO_SCHEMA": SELECT, INSERT;  
+    sql object YOUR_USER_TRIAL.HANA_INSTANCE.todoapp.data::todo: SELECT,INSERT,UPDATE,DELETE;  
+}

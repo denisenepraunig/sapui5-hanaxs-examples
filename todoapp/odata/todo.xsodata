@@ -1,0 +1,3 @@
+service {
+    "YOUR_USER_TRIAL.HANA_INSTANCE.todoapp.data::todo" as "todo";
+}
