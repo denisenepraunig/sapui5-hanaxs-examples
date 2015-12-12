@@ -11,6 +11,9 @@ The app is called **todoapp**. Please make sure to create the same package name 
 ### App screenshot
 ![Todo App Screenshot](screenshot_todo.png)
 
+### Slides from my sitWDF talk
+[SAPUI5 & HANA XS](https://github.com/denisenepraunig/sap-inside-tracks/tree/master/sitwdf-2015/slides)
+
 ### Folder structure
 App hosted inside an HANA instance:
 
