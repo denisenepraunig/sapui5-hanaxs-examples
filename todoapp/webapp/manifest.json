@@ -15,7 +15,16 @@
         "sourceTemplate": {
             "id": "ui5template.basicSAPUI5ApplicationProject",
             "version": "1.30.3"
-        }
+        },
+        "dataSources": {
+			"mainService": {
+				"uri": "../odata/todo.xsodata/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0"
+				}
+			}
+		}
     },
     "sap.ui": {
         "_version": "1.1.0",
@@ -57,6 +66,13 @@
             "cozy": true
         },
         "models": {
+           "": {
+				"dataSource": "mainService",
+				"settings": {
+					"useBatch" : false,
+					"defaultBindingMode" : "TwoWay"
+				}
+			},
             "i18n": {
                 "type": "sap.ui.model.resource.ResourceModel",
                 "settings": {

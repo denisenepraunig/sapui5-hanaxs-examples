@@ -1,78 +1,123 @@
 sap.ui.define([
-	"sap/ui/core/UIComponent",
-	"sap/ui/Device",
-	"todoapp/model/models",
-	"sap/ui/model/json/JSONModel",
-	"sap/ui/model/odata/v2/ODataModel"
-], function(UIComponent, Device, models, JSONModel, ODataModel) {
+	"sap/ui/core/mvc/Controller"
+], function(Controller) {
 	"use strict";
 
-	return UIComponent.extend("todoapp.Component", {
-
-		metadata: {
-			manifest: "json"
+	return Controller.extend("todoapp.controller.App", {
+		
+		onInit: function() {
+			this.oModel = this.getOwnerComponent().getModel();
+			this.oData = this.getOwnerComponent().getModel("data");
+		},
+		
+		fnSuccess : function() {
+			console.log("success");
 		},
 
-		/**
-		 * The component is initialized by UI5 automatically during the startup of the app and calls the init method once.
-		 * @public
-		 * @override
-		 */
-		init: function() {
+		fnError: function(sError) {
+			var oErrorText = JSON.parse(sError.responseText);
+			console.log("(╯°□°）╯︵ ┻━┻ " + "\n" + oErrorText.error.message.value);
+		},
+		
+		onAddTodo: function(oEvent) {
 
-			this._initOData();
+			// NOTE: if I use just getTime() - which has a length 16
+			// then I can't access the entity - strange error
+			// bad request - Syntax error at position 5
+			
+			var iId = Math.floor(new Date().getTime() / 1000);
+			var sId = iId.toString(16);
+			
+			var mTodo = {
+				id: sId,
+				title: this.oData.getProperty('/newTodo'),
+				completed: ""
+			};
 
-			this.oModel = new JSONModel({
-				newTodo: ''
+			this.oModel.create("/todo", mTodo, {
+				success: jQuery.proxy(this.fnSuccess, this),
+				error: jQuery.proxy(this.fnError, this)
 			});
-
-			this.setModel(this.oModel, "data");
-
-			// call the base component's init function
-			UIComponent.prototype.init.apply(this, arguments);
-
-			// set the device model
-			this.setModel(models.createDeviceModel(), "device");
+			
+			this.oData.setProperty('/newTodo', '');
 		},
 
-		_initOData: function() {
-
-			var sServiceUrl = "./odata/todo.xsodata";
-
-			this.oDataModel = new ODataModel(sServiceUrl);
-
-			// useBatch false is important for SP08 XS!
-			this.oDataModel.setUseBatch(false);
-
-			this.oDataModel.setDefaultBindingMode("TwoWay");
-
-			this.setModel(this.oDataModel);
-
-			// the OData model was not automatically created with the app descriptor
-			// because the useBatch was ignored...
+		onChangeTodo: function(oEvent) {
+			
+			var oInput = oEvent.getSource();
+			var sBindingPath = oInput.getBindingContext().getPath();
+			var sNewValue = oEvent.getParameters().newValue;
+			
+			var oSendData = {
+				title : sNewValue
+			};
+			
+			this.oModel.update(sBindingPath, oSendData, {
+				success: jQuery.proxy(this.fnSuccess, this),
+				error: jQuery.proxy(this.fnError, this)
+			});
+			
+			
+			/*
+			The following code works with Two-Way-Binding
+			BUT the success and error handler
+			are never called -> currently no support when batch = false
+			
+			so you won't end up in fnSuccess/fnError when debugging
+			and you don't see anything in the console
+			
+			workaround: maybe with oModel.attachRequestCompleted
+			and oModel.attachRequestFailed -> I did not try this
+			
+			*/
+			/*
+			this.oModel.submitChanges({
+				success: jQuery.proxy(this.fnSuccess, this),
+				error: jQuery.proxy(this.fnError, this)
+			});
+			*/
 		},
 
-		/**
-		 * This method can be called to determine whether the sapUiSizeCompact or sapUiSizeCozy
-		 * design mode class should be set, which influences the size appearance of some controls.
-		 * @public
-		 * @return {string} css class, either 'sapUiSizeCompact' or 'sapUiSizeCozy' - or an empty string if no css class should be set
-		 */
-		getContentDensityClass: function() {
-			if (this._sContentDensityClass === undefined) {
-				// check whether FLP has already set the content density class; do nothing in this case
-				if (jQuery(document.body).hasClass("sapUiSizeCozy") || jQuery(document.body).hasClass("sapUiSizeCompact")) {
-					this._sContentDensityClass = "";
-				} else if (!Device.support.touch) { // apply "compact" mode if touch is not supported
-					this._sContentDensityClass = "sapUiSizeCompact";
-				} else {
-					// "cozy" in case of touch support; default for most sap.m controls, but needed for desktop-first controls like sap.ui.table.Table
-					this._sContentDensityClass = "sapUiSizeCozy";
+		onToggleCompleted: function(oEvent) {
+			
+			var oSelected = oEvent.getParameter("listItem");
+			var sBindingPath = oSelected.getBindingContext().getPath();
+			
+			var bSelected = oEvent.getParameters().selected;
+			
+			// there is no boolean data type in HANA
+			// so therefore the value is mapped to a character
+			var sSelected = bSelected ? "X" : "";
+			
+			var oSendData = {
+				completed : sSelected
+			};
+			
+			this.oModel.update(sBindingPath, oSendData, {
+				success: jQuery.proxy(this.fnSuccess, this),
+				error: jQuery.proxy(this.fnError, this)
+			});
+		},
+		
+		onClearCompleted: function(oEvent) {
+			
+			// this.oModel.getObject() does not work!
+			
+			var oList = this.getView().byId("todo-list");
+			var aContexts = oList.getBinding("items").getContexts();
+			
+			aContexts.forEach(function(element, index, array) {
+				
+				var sBindingPath = element.getPath();
+				var oTodo = this.oModel.getProperty(sBindingPath);
+
+				if (oTodo.completed) {
+					this.oModel.remove(sBindingPath, {
+						success: jQuery.proxy(this.fnSuccess, this),
+						error: jQuery.proxy(this.fnError, this)
+					});
 				}
-			}
-			return this._sContentDensityClass;
+			}, this);
 		}
-
 	});
-
 });
