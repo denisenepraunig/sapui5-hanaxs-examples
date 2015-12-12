@@ -5,14 +5,17 @@ This is a Todo app with CRUD support for XSODATA with the SAPUI5 OData Model ver
 
 The app needs to be hosted inside an HANA instance as an XS-app.
 
+### Slides from my sitWDF talk
+[SAPUI5 & HANA XS](https://github.com/denisenepraunig/sap-inside-tracks/tree/master/sitwdf-2015/slides)
+
+### Workshop Material
+[Workshop material from EU CodeWeek 2015](http://bit.ly/1REhpIb)
+
 ### App package name
 The app is called **todoapp**. Please make sure to create the same package name or replace it with your package name.
 
 ### App screenshot
 ![Todo App Screenshot](screenshot_todo.png)
-
-### Slides from my sitWDF talk
-[SAPUI5 & HANA XS](https://github.com/denisenepraunig/sap-inside-tracks/tree/master/sitwdf-2015/slides)
 
 ### Folder structure
 App hosted inside an HANA instance:
